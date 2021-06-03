@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -23,13 +24,17 @@ public class Pet {
     private String name;
 
     @Nullable
+    private Date birthdate;
+
+    @Nullable
     private String paypalLink;
 
     @ManyToOne(optional = false)
     private User owner;
 
-    public Pet(@NotNull String name, @Nullable String paypalLink) {
+    public Pet(@NotNull String name, @Nullable Date birthdate, @Nullable String paypalLink) {
         this.name = name;
+        this.birthdate = birthdate;
         this.paypalLink = paypalLink;
     }
 }
