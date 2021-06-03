@@ -1,14 +1,12 @@
 package dev.vrba.onlypets.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +17,8 @@ import java.util.UUID;
         @Index(name = "discord_id_index", columnList = "discordId", unique = true)
     }
 )
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -34,6 +33,9 @@ public class User {
 
     @CreatedDate
     private Instant registeredAt;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pet> pets;
 
     public User(@NotNull String discordId, @NotNull String username, @NotNull String avatar) {
         this.id = UUID.randomUUID();
