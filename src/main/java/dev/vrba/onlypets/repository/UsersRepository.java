@@ -10,6 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface UsersRepository extends CrudRepository<User, UUID> {
-
     Optional<User> findByDiscordId(@NotNull String discordId);
 }

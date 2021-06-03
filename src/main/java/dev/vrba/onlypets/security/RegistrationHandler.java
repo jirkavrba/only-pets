@@ -6,26 +6,33 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
+import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
-public class RegistrationEventListener implements ApplicationListener<AuthenticationSuccessEvent> {
+public class RegistrationHandler implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
     private final UsersRepository repository;
 
     @Autowired
-    public RegistrationEventListener(UsersRepository repository) {
+    public RegistrationHandler(UsersRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void onApplicationEvent(@NotNull AuthenticationSuccessEvent event) {
-        OAuth2User authenticatedUser = ((OAuth2LoginAuthenticationToken) event.getSource()).getPrincipal();
+    @EventListener
+    public void onApplicationEvent(@NotNull InteractiveAuthenticationSuccessEvent event) {
+        OAuth2User authenticatedUser = ((OAuth2AuthenticationToken) event.getSource()).getPrincipal();
         Map<String, Object> attributes = authenticatedUser.getAttributes();
 
         String id = (String) attributes.get("id");
@@ -36,7 +43,7 @@ public class RegistrationEventListener implements ApplicationListener<Authentica
                 .map(entity -> updateUserProperties(entity, username, avatar))
                 .orElseGet(() -> registerUser(id, username, avatar));
 
-        // TODO: Update authentication principal
+        this.updateSecurityContext(user, authenticatedUser);
     }
 
     private User updateUserProperties(@NotNull User user, @NotNull String username, @NotNull String avatar) {
@@ -50,6 +57,17 @@ public class RegistrationEventListener implements ApplicationListener<Authentica
         User user = new User(discordId, username, avatar);
 
         return this.repository.save(user);
+    }
+
+    private void updateSecurityContext(@NotNull User user, @NotNull OAuth2User original) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user,
+                original,
+                original.getAuthorities()
+        );
+
+        SecurityContextHolder.clearContext();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String getAvatarUrl(@NotNull String id, @Nullable String avatar) {

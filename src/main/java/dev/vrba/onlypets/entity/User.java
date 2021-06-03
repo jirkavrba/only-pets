@@ -5,17 +5,18 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(
-    name = "users",
-    uniqueConstraints = @UniqueConstraint(columnNames = "discordId"),
-    indexes = {
-        @Index(name = "discord_id_index", columnList = "discordId", unique = true)
-    }
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(columnNames = "discordId"),
+        indexes = {
+                @Index(name = "discord_id_index", columnList = "discordId", unique = true)
+        }
 )
 @Getter
 @Setter

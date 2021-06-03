@@ -13,24 +13,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .cors()
+            .cors()
                 .and()
-                .oauth2Login()
+            .oauth2Login()
                 .loginProcessingUrl("/oauth2/callback")
                 .defaultSuccessUrl("/app")
-                .and()
+            .and()
                 .logout()
                 .logoutSuccessUrl("/")
                 .permitAll()
-                .and()
-                .authorizeRequests()
+            .and()
+            .authorizeRequests()
                 .antMatchers(
                         "/",
                         "/oauth2/authorization/discord",
                         "/oauth2/callback"
                 )
-                .permitAll()
-                .anyRequest()
+                    .permitAll()
+            .anyRequest()
                 .authenticated();
     }
 
