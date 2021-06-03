@@ -1,6 +1,7 @@
 package dev.vrba.onlypets.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ import java.util.UUID;
         @Index(name = "discord_id_index", columnList = "discordId", unique = true)
     }
 )
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
