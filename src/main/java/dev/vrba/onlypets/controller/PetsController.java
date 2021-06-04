@@ -2,14 +2,17 @@ package dev.vrba.onlypets.controller;
 
 import dev.vrba.onlypets.entity.Pet;
 import dev.vrba.onlypets.entity.dto.PetDTO;
+import dev.vrba.onlypets.exception.EntityNotFoundException;
 import dev.vrba.onlypets.repository.PetsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,5 +34,13 @@ public class PetsController {
                 .map(PetDTO.WithOwner::new)
                 .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PetDTO.WithOwner> pet(@PathVariable UUID id) {
+        return this.repository.findById(id)
+                    .map(PetDTO.WithOwner::new)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(EntityNotFoundException::new);
     }
 }

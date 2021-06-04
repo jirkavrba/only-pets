@@ -31,10 +31,10 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO.WithPets> user(@PathVariable("id") UUID id) {
-        User user = this.repository.findById(id)
-                        .orElseThrow(EntityNotFoundException::new);
-
-        return ResponseEntity.ok(new UserDTO.WithPets(user));
+    public ResponseEntity<UserDTO.WithPets> user(@PathVariable UUID id) {
+        return this.repository.findById(id)
+                .map(UserDTO.WithPets::new)
+                .map(ResponseEntity::ok)
+                .orElseThrow(EntityNotFoundException::new);
     }
 }
