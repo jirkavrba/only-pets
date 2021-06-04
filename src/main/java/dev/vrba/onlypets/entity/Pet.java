@@ -31,7 +31,7 @@ public class Pet {
     @Nullable
     private String paypalLink;
 
-    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User owner;
 
     public Pet(@NotNull String name, @NotNull String avatar, @Nullable Date birthdate, @Nullable String paypalLink) {

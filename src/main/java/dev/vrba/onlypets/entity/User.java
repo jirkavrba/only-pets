@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;

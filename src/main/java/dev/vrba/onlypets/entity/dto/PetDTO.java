@@ -40,11 +40,11 @@ public class PetDTO {
     @Getter
     public static class WithOwner extends PetDTO {
         @NotNull
-        private final User owner;
+        private final UserDTO owner;
 
         public WithOwner(@NotNull Pet pet) {
             super(pet);
-            this.owner = pet.getOwner();
+            this.owner = new UserDTO(pet.getOwner());
         }
     }
 }
