@@ -20,6 +20,9 @@ public class PetDTO {
     @NotNull
     private final String name;
 
+    @NotNull
+    private final String avatar;
+
     @Nullable
     private final Date birthdate;
 
@@ -29,6 +32,7 @@ public class PetDTO {
     public PetDTO(@NotNull Pet pet) {
         this.id = pet.getId();
         this.name = pet.getName();
+        this.avatar = pet.getAvatar();
         this.birthdate = pet.getBirthdate();
         this.paypalLink = pet.getPaypalLink();
     }

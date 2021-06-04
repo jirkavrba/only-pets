@@ -23,6 +23,8 @@ public class Pet {
 
     private String name;
 
+    private String avatar;
+
     @Nullable
     private Date birthdate;
 
@@ -32,8 +34,10 @@ public class Pet {
     @ManyToOne(optional = false)
     private User owner;
 
-    public Pet(@NotNull String name, @Nullable Date birthdate, @Nullable String paypalLink) {
+    public Pet(@NotNull String name, @NotNull String avatar, @Nullable Date birthdate, @Nullable String paypalLink) {
+        this.id = UUID.randomUUID();
         this.name = name;
+        this.avatar = avatar;
         this.birthdate = birthdate;
         this.paypalLink = paypalLink;
     }
