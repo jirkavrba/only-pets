@@ -31,3 +31,9 @@ spring:
             scope: identify
             client-id: ${DISCORD_CLIENT_ID}
             client-secret: ${DISCORD_CLIENT_SECRET}
+
+aws:
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  region: eu-central-1
+  bucket: only-pets
