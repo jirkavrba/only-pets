@@ -23,6 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User {
     @Id
+    @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
     private String discordId;

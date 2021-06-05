@@ -19,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Pet {
     @Id
+    @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
     private String name;

@@ -53,7 +53,7 @@ public class PetsController {
     public ResponseEntity<List<PetDTO>> index() {
         return ResponseEntity.ok(
                 StreamSupport.stream(this.petsRepository.findAll().spliterator(), true)
-                        .map(PetDTO.WithOwner::new)
+                        .map(PetDTO::new)
                         .collect(Collectors.toList())
         );
     }
