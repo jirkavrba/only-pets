@@ -10,13 +10,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -59,17 +57,6 @@ public class RegistrationHandler implements ApplicationListener<InteractiveAuthe
         return this.repository.save(user);
     }
 
-    private void updateSecurityContext(@NotNull User user, @NotNull OAuth2User original) {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user,
-                original,
-                original.getAuthorities()
-        );
-
-        SecurityContextHolder.clearContext();
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
     private String getAvatarUrl(@NotNull String id, @Nullable String avatar) {
         if (avatar == null) {
             // TODO: Supply an actual URL
@@ -80,5 +67,16 @@ public class RegistrationHandler implements ApplicationListener<InteractiveAuthe
         String extension = animated ? "gif" : "png";
 
         return String.format("https://cdn.discordapp.com/avatars/%s/%s.%s?size=128", id, avatar, extension);
+    }
+
+    private void updateSecurityContext(@NotNull User user, @NotNull OAuth2User original) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user,
+                original,
+                original.getAuthorities()
+        );
+
+        SecurityContextHolder.clearContext();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
